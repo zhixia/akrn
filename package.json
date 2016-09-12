@@ -1,24 +1,23 @@
 {
-  "name": "@ali/AK",
-  "version": "0.2.6",
-  "description": "ali-AK",
- 
+  "name": "akrn",
+  "version": "1.0.0",
+  "description": "akrn",
+  "main": "lib/index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
   "repository": {
     "type": "git",
-    "url": ""
+    "url": "git+https://github.com/qixuan/akrn.git"
   },
-  "keywords": [
-    "react",
-    "react-native"
-  ],
-  "publishConfig": {
-    "registry": "http://registry.npm.alibaba-inc.com"
-   },
-  "main":"./lib/index.js",
   "dependencies": {
+    "rn-core": "~0.2.0",
     "react-timer-mixin": "0.13.3"
   },
-  "devDependencies": {
-    "rn-core": "~0.2.0"
-  } 
+  "author": "qixuan",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/qixuan/akrn/issues"
+  },
+  "homepage": "https://github.com/qixuan/akrn#readme"
 }
