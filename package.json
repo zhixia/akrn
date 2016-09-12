@@ -1,0 +1,24 @@
+{
+  "name": "@ali/AK",
+  "version": "0.2.6",
+  "description": "ali-AK",
+ 
+  "repository": {
+    "type": "git",
+    "url": ""
+  },
+  "keywords": [
+    "react",
+    "react-native"
+  ],
+  "publishConfig": {
+    "registry": "http://registry.npm.alibaba-inc.com"
+   },
+  "main":"./lib/index.js",
+  "dependencies": {
+    "react-timer-mixin": "0.13.3"
+  },
+  "devDependencies": {
+    "rn-core": "~0.2.0"
+  } 
+}
