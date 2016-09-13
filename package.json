@@ -1,6 +1,6 @@
 {
   "name": "akrn",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "description": "akrn",
   "main": "lib/index.js",
   "scripts": {

@@ -95,12 +95,15 @@ var PipsSlider = React.createClass({
 
 
   },
+  componentWillReceiveProps: function(nextProps) {
+    this.set(nextProps.value)
+  },
 
   set(value) {
     this.optionsArray = this.props.optionsArray || converter.createArray(this.props.min, this.props.max, this.props.step);
     this.stepLength = this.state.width / this.optionsArray.length;
 
-    var initialValue = converter.valueToPosition(value, this.optionsArray, this.state.width);
+    var initialValue = converter.valueToPosition(value, this.optionsArray, this.state.width-30);
     if ((typeof this.props.step == 'number') && this.optionsArray.indexOf(value) == -1) { return };
     this.setState({
       pressedOne: true,
@@ -312,9 +315,9 @@ var styles = StyleSheet.create({
   container: {
     justifyContent: 'center',
     paddingTop: 40,
-    marginLeft: 20,
+    marginLeft: 15,
     marginRight: 20,
-    paddingLeft:10,
+    paddingLeft:15,
     paddingRight:10,
     flex: 1,
     // paddingTop:40,
