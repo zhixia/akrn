@@ -11,17 +11,7 @@ import React,{
   processColor,
 } from 'react-native';
 
-var AK = require('@ali/AK');
-var {
-    Router,
-    SDK,
-    Util,
-    DA,
-    Windvane,
-    Iconfont,
-    DeviceData
-} = AK;
-
+const DA = require('../lib/DA')
 const AKRCTColorPicker = NativeModules.AKRCTColorPicker;
 
 var ColorPicker = React.createClass({
@@ -58,7 +48,7 @@ var ColorPicker = React.createClass({
       onStartShouldSetPanResponder: (evt,gestureState) => true,
       onMoveShouldSetPanResponder: (evt,gestureState) => true,
       // onPanResponderGrant: this._handlePanResponderGrant,
-	  // onPanResponderMove: this._handlePanResponderMove,
+    // onPanResponderMove: this._handlePanResponderMove,
       onPanResponderRelease: this._handlePanResponderEnd,
       onPanResponderTerminate: this._handlePanResponderEnd,
     });
@@ -79,32 +69,32 @@ var ColorPicker = React.createClass({
   render: function() {
     return (
       <View style={{flex:1,justifyContent:'center',alignItems:'center'}}>
-    		<TouchableHighlight style={styles.circlestyle} ref = "colorcircle">
-    		  <Image style={styles.container1} source={{uri: 'https://img.alicdn.com/tps/TB1VfYjLpXXXXcrXVXXXXXXXXXX-500-500.png'}} {...this._panResponder.panHandlers} />
-    		</TouchableHighlight>
+        <TouchableHighlight style={styles.circlestyle} ref = "colorcircle">
+          <Image style={styles.container1} source={{uri: 'https://img.alicdn.com/tps/TB1VfYjLpXXXXcrXVXXXXXXXXXX-500-500.png'}} {...this._panResponder.panHandlers} />
+        </TouchableHighlight>
         <View ref={(circle) => { this.circle = circle}} style={styles.circle} ></View>
       </View>
     );
   },
  _pickColor: function(evt) {
-	  var self = this;
+    var self = this;
     var element = this.refs.colorcircle;
     var tag = React.findNodeHandle(element);
 
-	  AKRCTColorPicker.pick(tag,PixelRatio.get()*evt.x0 ,PixelRatio.get()*evt.y0 ,function(colorOB:Object){//所传坐标值需要换算为px
+    AKRCTColorPicker.pick(tag,PixelRatio.get()*evt.x0 ,PixelRatio.get()*evt.y0 ,function(colorOB:Object){//所传坐标值需要换算为px
 
       console.log('colorOB:',colorOB)
-   	  self._showColor(colorOB);//展示所点选颜色。注意引用 this的作用范围
-	  });
+      self._showColor(colorOB);//展示所点选颜色。注意引用 this的作用范围
+    });
   },
 
-	_showColor: function(colorOB){
-	const circle = this.circle;
-	circle && circle.setNativeProps({//设置style的背景色
+  _showColor: function(colorOB){
+  const circle = this.circle;
+  circle && circle.setNativeProps({//设置style的背景色
       style: {
-		  // backgroundColor: 'rgb('+colorOB.Red+','+colorOB.Green+','+colorOB.Blue+')' 
-			}
-	});
+      // backgroundColor: 'rgb('+colorOB.Red+','+colorOB.Green+','+colorOB.Blue+')' 
+      }
+  });
   },
 
   _updatePosition: function() {
