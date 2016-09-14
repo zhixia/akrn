@@ -52,8 +52,8 @@ var ColorPicker = React.createClass({
       onPanResponderRelease: this._handlePanResponderEnd,
       onPanResponderTerminate: this._handlePanResponderEnd,
     });
-    this._previousLeft = 20;//初始化属性值
-    this._previousTop = 30;
+    this._previousLeft = 50;//初始化属性值
+    this._previousTop = 100;
     this._circleStyles = {
       style: {
         left: this._previousLeft,
@@ -69,10 +69,12 @@ var ColorPicker = React.createClass({
   render: function() {
     return (
       <View style={{flex:1,justifyContent:'center',alignItems:'center'}}>
+        <View>
         <TouchableHighlight style={styles.circlestyle} ref = "colorcircle">
           <Image style={styles.container1} source={{uri: 'https://img.alicdn.com/tps/TB1VfYjLpXXXXcrXVXXXXXXXXXX-500-500.png'}} {...this._panResponder.panHandlers} />
         </TouchableHighlight>
         <View ref={(circle) => { this.circle = circle}} style={styles.circle} ></View>
+        </View>
       </View>
     );
   },
@@ -101,7 +103,7 @@ var ColorPicker = React.createClass({
     this.circle && this.circle.setNativeProps(this._circleStyles);
   },
   _handlePanResponderEnd: function(evt:Object,gestureState:Object) {
-    this._circleStyles.style.left = evt.nativeEvent.locationX;
+    this._circleStyles.style.left = evt.nativeEvent.locationX ;
     this._circleStyles.style.top = evt.nativeEvent.locationY;
     this._updatePosition();
     this._pickColor(gestureState);
