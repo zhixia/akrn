@@ -11,8 +11,8 @@
             showTick= {true}
             step= {50}
             value={50}
-
-                  stepDescription={['低','中','高']}  />
+            disabled={true} //可以不写
+            stepDescription={['低','中','高']}  />
           </View>
  */
 var React = require('react-native');
@@ -29,11 +29,8 @@ var UIManager = NativeModules.UIManager
 var converter = require('./converter');
 var mockProps = require('./mockProps');
 
-
-
 var sliderProps = {
   value: PropTypes.number,
-
   onValueChangeStart: PropTypes.func,
   onValueChange: PropTypes.func,
   onValueChangeFinish: PropTypes.func,
@@ -68,35 +65,31 @@ var PipsSlider = React.createClass({
 
   getInitialState() {
     this.optionsArray = this.props.optionsArray || converter.createArray(this.props.min, this.props.max, this.props.step);
-
-
     return {
-
+      disabled : this.props.disabled,
+      _panResponderOne : {}
     };
   },
-
   componentWillMount() {
     var customPanResponder = function (start, move, end) {
-      return PanResponder.create({
-        onStartShouldSetPanResponder: (evt, gestureState) => true,
-        onStartShouldSetPanResponderCapture: (evt, gestureState) => true,
-        onMoveShouldSetPanResponder: (evt, gestureState) => true,
-        onMoveShouldSetPanResponderCapture: (evt, gestureState) => true,
-        onPanResponderGrant: (evt, gestureState) => start(),
-        onPanResponderMove: (evt, gestureState) => move(gestureState),
-        onPanResponderTerminationRequest: (evt, gestureState) => true,
-        onPanResponderRelease: (evt, gestureState) => end(gestureState),
-        onPanResponderTerminate: (evt, gestureState) => end(gestureState),
-        onShouldBlockNativeResponder: (evt, gestureState) => true
-      })
+        return PanResponder.create({
+          onStartShouldSetPanResponder: (evt, gestureState) => true,
+          onStartShouldSetPanResponderCapture: (evt, gestureState) => true,
+          onMoveShouldSetPanResponder: (evt, gestureState) => true,
+          onMoveShouldSetPanResponderCapture: (evt, gestureState) => true,
+          onPanResponderGrant: (evt, gestureState) => start(),
+          onPanResponderMove: (evt, gestureState) => move(gestureState),
+          onPanResponderTerminationRequest: (evt, gestureState) => true,
+          onPanResponderRelease: (evt, gestureState) => end(gestureState),
+          onPanResponderTerminate: (evt, gestureState) => end(gestureState),
+          onShouldBlockNativeResponder: (evt, gestureState) => true
+        })
     };
-
-    this._panResponderOne = customPanResponder(this.startOne, this.moveOne, this.endOne);
-
-
+   this._panResponderOne = customPanResponder(this.startOne, this.moveOne, this.endOne);
   },
   componentWillReceiveProps: function(nextProps) {
-    this.set(nextProps.value)
+    this.set(nextProps.value);
+    this.setState({disabled:nextProps.disabled})
   },
 
   set(value) {
@@ -128,6 +121,7 @@ var PipsSlider = React.createClass({
     return result;
   },
   startOne() {
+    if(this.state.disabled){return;}
     this.props.onValueChangeStart();
     this.setState({
       onePressed: !this.state.onePressed
@@ -136,6 +130,7 @@ var PipsSlider = React.createClass({
 
 
   moveOne(gestureState) {
+    if(this.state.disabled){return;}
     var unconfined = gestureState.dx + this.state.pastOne;
     var bottom = 0;
     var top = this.state.width-30;
@@ -174,6 +169,7 @@ var PipsSlider = React.createClass({
 
 
   endOne(gestureState) {
+    if(this.state.disabled){return;}
 
     var positionOne, typeNumber = 'number';
     if(this.state.discrition == 'left'){
@@ -232,7 +228,7 @@ var PipsSlider = React.createClass({
     }
   },
   render() {
-
+    console.log('this.state.disabled',this.state.disabled)
     var {positionOne} = this.state;
     var {selectedStyle, unselectedStyle} = this.props;
 
@@ -260,7 +256,7 @@ var PipsSlider = React.createClass({
         <View style={[styles.fullTrack]}>
           <View style={[this.props.trackStyle, styles.track, trackOneStyle, { width: trackOneLength }]} />
           <View style={styles.tickCt}>
-            <View style={[{ width: trackOneLength || 0 }, styles.innerTrack]}></View>
+            <View style={[{ width: trackOneLength || 0 }, styles.innerTrack,this.state.disabled && {backgroundColor:'#e4e4e4'}]}></View>
             <View style={styles.tickCtInner}>
               {this.renderTick() }
             </View>
@@ -275,6 +271,7 @@ var PipsSlider = React.createClass({
               markerStyle={this.props.markerStyle}
               pressedMarkerStyle={this.props.pressedMarkerStyle}
               value={this.state.tickDesc}
+              disabled={this.state.disabled}
               />
           </View>
 
@@ -301,7 +298,7 @@ var PipsSlider = React.createClass({
     var results = [];
     if (typeof step == 'number') {
       for (var i = 0; i < this.optionsArray.length; i++) {
-        results.push(<View key={i} style={styles.tick}></View>)
+        results.push(<View key={i} style={[styles.tick,this.state.disabled && {backgroundColor:'#c6c5c5'}]}></View>)
       };
     };
     return results;
