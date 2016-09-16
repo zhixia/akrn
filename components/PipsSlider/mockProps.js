@@ -52,7 +52,7 @@ var mockProps = {
     console.log('press started');
   },
   onValueChange: function (values) {
-    console.log('changing', values);
+    // console.log('changing', values);
   },
   onValueChangeFinish: function (values) {
     console.log('changed', values);

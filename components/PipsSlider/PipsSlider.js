@@ -12,7 +12,9 @@
             step= {50}
             value={50}
             disabled={true} //可以不写
-            stepDescription={['低','中','高']}  />
+            disabledValue={[3,4] //可以不写
+            stepDescription={['低','中','高']} 
+             />
           </View>
  */
 var React = require('react-native');
@@ -67,7 +69,7 @@ var PipsSlider = React.createClass({
     this.optionsArray = this.props.optionsArray || converter.createArray(this.props.min, this.props.max, this.props.step);
     return {
       disabled : this.props.disabled,
-      _panResponderOne : {}
+      disabledValue: this.props.disabledValue
     };
   },
   componentWillMount() {
@@ -89,7 +91,9 @@ var PipsSlider = React.createClass({
   },
   componentWillReceiveProps: function(nextProps) {
     this.set(nextProps.value);
-    this.setState({disabled:nextProps.disabled})
+    this.setState({
+      disabled : nextProps.disabled,
+      disabledValue : nextProps.disabledValue})
   },
 
   set(value) {
@@ -166,16 +170,24 @@ var PipsSlider = React.createClass({
     }
   },
 
-
-
   endOne(gestureState) {
     if(this.state.disabled){return;}
+
+    if(this.state.valueOne == this.state.disabledValue){
+      var value = this.state.valueOne;
+    }
 
     var positionOne, typeNumber = 'number';
     if(this.state.discrition == 'left'){
       var value = this.state.valueOne  - 1 < 0 ? 0 :this.state.valueOne  - 1;
+       if(this.state.disabledValue && value == this.state.disabledValue[this.state.disabledValue.length-1]){
+         value = value + 1;
+       }
     }else if(this.state.discrition == 'right'){
        var value = this.state.valueOne + 1 > this.props.max ? this.props.max : this.state.valueOne + 1;
+       if(this.state.disabledValue && value == this.state.disabledValue[0]){
+         value = value - 1;
+       }
     }else{
       var value = this.state.valueOne;
     }
@@ -201,6 +213,8 @@ var PipsSlider = React.createClass({
 
       this.props.onValueChangeFinish(change);
     });
+
+    this.state.disabledValue && this.setState({tickDesc: this.getTickDescription(value)});
   },
   componentDidMount: function () {
     var handle = React.findNodeHandle(this.refs.ct);
@@ -228,11 +242,8 @@ var PipsSlider = React.createClass({
     }
   },
   render() {
-    console.log('this.state.disabled',this.state.disabled)
     var {positionOne} = this.state;
     var {selectedStyle, unselectedStyle} = this.props;
-
-
     var trackOneLength = positionOne;
     var trackOneStyle = selectedStyle;
 
