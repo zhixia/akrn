@@ -15,28 +15,6 @@ const DA = require('../lib/DA')
 const AKRCTColorPicker = NativeModules.AKRCTColorPicker;
 
 var ColorPicker = React.createClass({
-  statics:{
-      navbarPassProps:{
-        title: '颜色',
-      }
-  },
-  onNavBtnPress:function   (nav,btnName,route) {
-    var self = this;
-    if (btnName == 'back') {
-      DA.back();
-    }
-    if(btnName == 'common'){
-      if(Platform.OS == 'ios'){
-        DA.pushWebView({
-          url:'https://aliplus.yunos.com/router/mydevice?uuid='+self.props.uuid
-        })
-      }else{
-        DA.pushWebView({
-          url:'https://aliplus.yunos.com/approuter/mydevice?uuid='+self.props.uuid
-        })        
-      }
-    }
-  },
  _panResponder: {},
   _previousLeft: 0,
  _previousTop: 0,
@@ -84,21 +62,10 @@ var ColorPicker = React.createClass({
     var tag = React.findNodeHandle(element);
 
     AKRCTColorPicker.pick(tag,PixelRatio.get()*evt.x0 ,PixelRatio.get()*evt.y0 ,function(colorOB:Object){//所传坐标值需要换算为px
-
       console.log('colorOB:',colorOB)
-      self._showColor(colorOB);//展示所点选颜色。注意引用 this的作用范围
+      self.props.onValueChange(colorOB);
     });
   },
-
-  _showColor: function(colorOB){
-  const circle = this.circle;
-  circle && circle.setNativeProps({//设置style的背景色
-      style: {
-      // backgroundColor: 'rgb('+colorOB.Red+','+colorOB.Green+','+colorOB.Blue+')' 
-      }
-  });
-  },
-
   _updatePosition: function() {
     this.circle && this.circle.setNativeProps(this._circleStyles);
   },
