@@ -63,7 +63,7 @@ var ColorPicker = React.createClass({
 
     AKRCTColorPicker.pick(tag,PixelRatio.get()*evt.x0 ,PixelRatio.get()*evt.y0 ,function(colorOB:Object){//所传坐标值需要换算为px
       console.log('colorOB:',colorOB)
-      self.props.onValueChange(colorOB);
+      self.props.onValueChange && self.props.onValueChange(colorOB);
     });
   },
   _updatePosition: function() {
