@@ -151,7 +151,6 @@ var styles = StyleSheet.create({
         alignItems: 'center',
     },
     content: {
-        textAlign: 'left',
         justifyContent: 'center',
         width: 220,
         backgroundColor: 'transparent',
